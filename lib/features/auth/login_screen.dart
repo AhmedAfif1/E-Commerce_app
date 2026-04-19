@@ -6,6 +6,7 @@ import 'package:ecommerce_app/core/Styling/app_colors.dart';
 import 'package:ecommerce_app/core/Styling/app_styles.dart';
 import 'package:ecommerce_app/core/utils/animated_snack_bar.dart';
 import 'package:ecommerce_app/core/utils/service_locator.dart';
+import 'package:ecommerce_app/core/utils/storage_helper.dart';
 import 'package:ecommerce_app/core/widgets/custom_text_filed.dart';
 import 'package:ecommerce_app/core/widgets/loading_lottie.dart';
 import 'package:ecommerce_app/core/widgets/primary_button_widget.dart';
@@ -36,6 +37,11 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
     username = TextEditingController();
     password = TextEditingController();
+    sl<StorageHelper>().getToken().then((token) {
+      if (token != null && token.isNotEmpty) {
+        context.pushReplacementNamed(AppRotes.mainScreen);
+      }
+    });
   }
 
   @override
@@ -45,10 +51,19 @@ class _LoginScreenState extends State<LoginScreen> {
         body: BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) {
             if (state is AuthFailure) {
-              ShowAnimatedSnackDiolog(context,message: state.errorMessage,type: AnimatedSnackBarType.error);
+              ShowAnimatedSnackDiolog(
+                context,
+                message: state.errorMessage,
+                type: AnimatedSnackBarType.error,
+              );
             }
             if (state is AuthSuccess) {
-              ShowAnimatedSnackDiolog(context,message: state.errorMessage,type: AnimatedSnackBarType.success);
+              ShowAnimatedSnackDiolog(
+                context,
+                message: state.errorMessage,
+                type: AnimatedSnackBarType.success,
+              );
+              context.pushReplacementNamed(AppRotes.mainScreen);
             }
           },
           builder: (context, state) {

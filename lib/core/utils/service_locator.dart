@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/core/networking/dio_helper.dart';
+import 'package:ecommerce_app/core/utils/storage_helper.dart';
 import 'package:ecommerce_app/features/auth/repo/auth_repo.dart';
 import 'package:get_it/get_it.dart';
 
@@ -13,6 +14,9 @@ void setupServiceLocator() {
   //repo dependency
 
   sl.registerLazySingleton(() => AuthRepo(sl()));
+
+  //StorageHelper
+  sl.registerLazySingleton(() => StorageHelper());
   //cubit
 
   sl.registerFactory(() => AuthRepo(sl()));

@@ -3,6 +3,8 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:ecommerce_app/core/networking/api_end_points.dart';
 import 'package:ecommerce_app/core/networking/dio_helper.dart';
+import 'package:ecommerce_app/core/utils/service_locator.dart';
+import 'package:ecommerce_app/core/utils/storage_helper.dart';
 import 'package:ecommerce_app/features/auth/models/login_response_model.dart';
 
 class AuthRepo {
@@ -22,7 +24,13 @@ class AuthRepo {
         LoginResponseModel loginResponse = LoginResponseModel.fromJson(
           response.data,
         );
-        return Right(loginResponse);
+        if (loginResponse.token != null) {
+          await sl<StorageHelper>().saveToken(loginResponse.token!);
+
+          return Right(loginResponse);
+        }else {
+          return Left("Token is null");
+        }
       } else {
         return Left(response.toString());
       }
