@@ -6,12 +6,15 @@ import 'package:ecommerce_app/core/networking/dio_helper.dart';
 import 'package:ecommerce_app/features/auth/models/login_response_model.dart';
 
 class AuthRepo {
+  final DioHelper _dioHelper;
+  AuthRepo(this._dioHelper);
+
   Future<Either<String, LoginResponseModel>> logIn(
     String email,
     String password,
   ) async {
     try {
-      final response = await DioHelper.postRequest(
+      final response = await _dioHelper.postRequest(
         endPoint: ApiEndPoints.login,
         data: {'username': email, 'password': password},
       );
