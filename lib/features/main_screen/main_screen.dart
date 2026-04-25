@@ -1,8 +1,12 @@
 import 'package:ecommerce_app/core/Styling/app_colors.dart';
+import 'package:ecommerce_app/core/utils/service_locator.dart';
 import 'package:ecommerce_app/features/account/account_screen.dart';
 import 'package:ecommerce_app/features/cart/cart_screen.dart';
+import 'package:ecommerce_app/features/home_screen/cubits/cubit/categories_cubit.dart';
+import 'package:ecommerce_app/features/home_screen/cubits/cubit/products_cubit.dart';
 import 'package:ecommerce_app/features/home_screen/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MainScreen extends StatefulWidget {
@@ -14,7 +18,17 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int currentIndix = 0;
-  List<Widget> screens = [HomeScreen(), CartScreen(), AccountScreen()];
+  List<Widget> screens = [
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => sl<ProductsCubit>()),
+        BlocProvider(create: (context) => sl<CategoriesCubit>()),
+      ],
+      child: HomeScreen(),
+    ),
+    CartScreen(),
+    AccountScreen(),
+  ];
   @override
   Widget build(BuildContext context) {
     return SafeArea(

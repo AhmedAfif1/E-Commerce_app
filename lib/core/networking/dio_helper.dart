@@ -18,15 +18,12 @@ class DioHelper {
     }
   }
 
-  getRequest({
-    required String endPoint,
-    required Map<String, dynamic> query,
-  }) async {
+  getRequest({required String endPoint, Map<String, dynamic>? query}) async {
     try {
       Response response = await dio!.get(endPoint, queryParameters: query);
       return response;
     } catch (e) {
-      log(e.toString());
+      rethrow;
     }
   }
 
