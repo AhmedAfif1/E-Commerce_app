@@ -4,6 +4,7 @@ import 'package:ecommerce_app/features/address/address_screen.dart';
 import 'package:ecommerce_app/features/auth/cubit/auth/auth_cubit.dart';
 import 'package:ecommerce_app/features/auth/login_screen.dart';
 import 'package:ecommerce_app/features/auth/register_screen.dart';
+import 'package:ecommerce_app/features/home_screen/models/products_model.dart';
 import 'package:ecommerce_app/features/main_screen/main_screen.dart';
 import 'package:ecommerce_app/features/product_details/product_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,7 +35,10 @@ class RouterGenrationConfig {
       GoRoute(
         name: AppRotes.productScreen,
         path: AppRotes.productScreen,
-        builder: (context, state) => ProductScreen(),
+        builder: (context, state) {
+          ProductsModel product = state.extra as ProductsModel;
+          return ProductScreen(product: product,);
+        },
       ),
       GoRoute(
         name: AppRotes.addressScreen,

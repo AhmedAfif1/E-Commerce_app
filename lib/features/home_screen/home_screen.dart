@@ -77,9 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           setState(() {
                             selectedCat = cat;
                             if (selectedCat == "All") {
-                               context
-                                  .read<ProductsCubit>()
-                                  .fetchProducts();
+                              context.read<ProductsCubit>().fetchProducts();
                             } else {
                               context
                                   .read<ProductsCubit>()
@@ -126,11 +124,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       children: products.map((product) {
                         return ProductItem(
-                          imaage: product.image!,
+                          imaage: product.image ?? "",
                           title: product.title ?? "",
                           price: product.price.toString(),
                           onTap: () {
-                            context.pushNamed(AppRotes.productScreen);
+
+                            context.pushNamed(AppRotes.productScreen,extra: product);
                           },
                         );
                       }).toList(),

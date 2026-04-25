@@ -1,11 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app/core/Styling/app_styles.dart';
 import 'package:ecommerce_app/core/widgets/primary_button_widget.dart';
 import 'package:ecommerce_app/core/widgets/spacing_widget.dart';
+import 'package:ecommerce_app/features/home_screen/models/products_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProductScreen extends StatelessWidget {
-  const ProductScreen({super.key});
+  final ProductsModel product;
+  const ProductScreen({required this.product, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,14 +27,11 @@ class ProductScreen extends StatelessWidget {
                   Container(
                     width: 341.w,
                     height: 341.h,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.r),
-                      color: Colors.grey,
-                    ),
+                   child: CachedNetworkImage(imageUrl: product.image ??""),
                   ),
                   const HeightSpacing(12),
                   Text(
-                    'Fit Polo T Shirt',
+                    product.title ?? "",
                     style: AppStyles.black16w600.copyWith(fontSize: 24.sp),
                   ),
                   const HeightSpacing(8),
@@ -39,25 +39,30 @@ class ProductScreen extends StatelessWidget {
                     children: [
                       Icon(Icons.star, size: 18.sp, color: Colors.orange),
                       WidthSpacing(2),
-                      Text(
-                        '4.0/5 ',
-                        style: AppStyles.black15BoldStyle.copyWith(
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
+
+                      product.rating != null
+                          ? Text(
+                              '${product.rating?.rate}/5 ',
+                              style: AppStyles.black15BoldStyle.copyWith(
+                                decoration: TextDecoration.underline,
+                              ),
+                            )
+                          : SizedBox.shrink(),
                       WidthSpacing(2),
-                      Text(
-                        '(45 reviews)',
-                        style: AppStyles.grey12w500.copyWith(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15.sp,
-                        ),
-                      ),
+                      product.rating != null
+                          ? Text(
+                              '(${product.rating?.count} reviews)',
+                              style: AppStyles.grey12w500.copyWith(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15.sp,
+                              ),
+                            )
+                          : SizedBox.shrink(),
                     ],
                   ),
                   HeightSpacing(13),
                   Text(
-                    'Blue T Shirt . Good for All Men and Suits for All of Them.Blue T Shirt . Good for All Men and Suits for All of Them',
+                    product.description ?? "",
                     style: AppStyles.grey12w500.copyWith(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w400,
@@ -92,7 +97,7 @@ class ProductScreen extends StatelessWidget {
                           ),
                           HeightSpacing(4),
                           Text(
-                            '1,190 \$',
+                            '${product.price} \$',
                             style: AppStyles.black16w600.copyWith(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
